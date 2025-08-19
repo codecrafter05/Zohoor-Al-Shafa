@@ -1,0 +1,270 @@
+/* ===== Color System (Zohoor brand feel) ===== */
+:root{
+  --brand:#472257;           /* primary purple */
+  --brand-ink:#3e1e4b;
+  --accent:#8a5aa3;          /* subtle accent for hovers */
+  --bg:#f6f2f8;              /* light, warm background */
+  --card:#ffffff;
+  --ink:#4c3c4f;
+  --muted:#876f86;
+  --stroke:#eadff0;
+  --chip:#f2e9f7;
+  --shadow:0 8px 24px rgba(33,18,36,.08);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body.zs-body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "IBM Plex Sans Arabic", Arial, sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== Layout ===== */
+.container{
+  max-width:1280px;
+  margin-inline:auto;
+  padding:24px 20px 60px;
+}
+
+/* ===== Topbar ===== */
+.topbar{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  padding-bottom:16px;
+}
+.page-title{
+  margin:0;
+  font-size:28px;
+  letter-spacing:.4px;
+  color:var(--brand-ink);
+}
+.chev{font-size:.9em; opacity:.8}
+.subtext{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+.topbar-right{display:flex; gap:10px}
+.icon-btn{
+  display:inline-grid;
+  place-items:center;
+  width:40px; height:40px;
+  border-radius:10px;
+  border:1px solid var(--stroke);
+  background:var(--card);
+  box-shadow:var(--shadow);
+  cursor:pointer;
+}
+.icon-btn svg{fill:var(--brand-ink)}
+.icon-btn:hover{transform:translateY(-1px)}
+
+/* ===== Tabs ===== */
+.tabs-wrap{
+  position:sticky; top:0; z-index:5;
+  padding:14px 0 12px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.tabs-scroll{
+  display:flex; gap:10px; overflow:auto; scrollbar-width:none;
+  padding-bottom:2px;
+}
+.tabs-scroll::-webkit-scrollbar{display:none}
+.tab{
+  white-space:nowrap;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--brand);
+  background:transparent;
+  color:var(--brand);
+  font-weight:600;
+  letter-spacing:.3px;
+  cursor:pointer;
+}
+.tab.active{
+  background:var(--brand);
+  color:#fff;
+  border-color:var(--brand);
+}
+.tab .heart{margin-right:6px}
+
+/* ===== Section ===== */
+.section{
+  margin-top:10px;
+  margin-block: 48px;        
+}
+
+.section-title{
+  margin:10px 0 4px;
+  font-size:22px; color:var(--brand-ink);
+  display:flex; align-items:center; gap:10px;
+}
+.section-title .heart{color:#b24b4b}
+.section-sub{
+  margin:0 0 18px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* ===== Cards Grid ===== */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:22px 24px;
+}
+@media (max-width:1100px){
+  .cards-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+}
+@media (max-width:680px){
+  .cards-grid{grid-template-columns:1fr}
+}
+
+/* ===== Food Card ===== */
+.food-card{
+  display:flex; align-items:stretch; gap:16px;
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  min-height:126px;
+}
+.food-card:hover{box-shadow:0 10px 28px rgba(33,18,36,.12)}
+
+.info{flex:1; min-width:0}
+.food-name{
+  margin:2px 0 6px;
+  font-size:18px; color:var(--brand-ink);
+}
+.food-desc{
+  margin:0 0 10px;
+  color:var(--ink);
+  opacity:.85;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.price{
+  color:var(--brand-ink);
+  font-weight:700;
+  letter-spacing:.3px;
+}
+
+/* ===== Thumbnail & Like badge ===== */
+.thumb{
+  position:relative;
+  width:92px; flex:0 0 92px;
+}
+.thumb img{
+  width:92px; height:92px;
+  object-fit:cover;
+  border-radius:12px;
+  display:block;
+}
+.like-badge{
+  position:absolute; right:6px; top:6px;
+  display:inline-flex; align-items:center; gap:6px;
+  background:#fff;
+  color:var(--brand-ink);
+  border:1px solid var(--stroke);
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  box-shadow:var(--shadow);
+}
+.like-badge svg{fill:#b24b4b}
+
+/* ===== Utilities ===== */
+.heart{user-select:none}
+
+
+/* ===== Modal (Food details) ===== */
+.modal{ 
+  position:fixed; inset:0; display:none; z-index:50;
+}
+.modal.open{ display:block; }
+.modal-backdrop{
+  position:absolute; inset:0; background:rgba(28,14,32,.45); backdrop-filter: blur(2px);
+}
+.modal-dialog{
+  position:relative; 
+  max-width:720px; width:92%;
+  margin: clamp(32px, 8vh, 72px) auto;
+  background: var(--card);
+  border:1px solid var(--stroke);
+  border-radius:16px;
+  box-shadow: var(--shadow);
+  animation: modalIn .18s ease-out;
+}
+@keyframes modalIn{from{opacity:.7; transform: translateY(6px)} to{opacity:1; transform:none}}
+
+.modal-close{
+  position:absolute; top:10px; inset-inline-end:10px;
+  width:36px; height:36px; border-radius:10px;
+  border:1px solid var(--stroke); background:#fff; cursor:pointer;
+  font-size:20px; line-height:1; color:var(--brand-ink); 
+  display:grid; place-items:center;
+}
+.modal-content{
+  display:flex; gap:18px; padding:18px;
+}
+.modal-thumb img{
+  width:140px; height:140px; object-fit:cover; border-radius:14px; display:block;
+}
+.modal-info{ flex:1; min-width:0 }
+.modal-name{ margin:4px 0 8px; font-size:22px; color:var(--brand-ink) }
+.modal-desc{ margin:0 0 12px; color:var(--ink); opacity:.95; }
+.modal-price{ color:var(--brand-ink); font-weight:800; letter-spacing:.3px }
+
+/* Mobile layout */
+@media (max-width:560px){
+  .modal-content{ flex-direction:column; }
+  .modal-thumb img{ width:100%; height:200px; }
+}
+
+/* Make cards clickable */
+.food-card{ cursor:pointer; }
+.food-card:focus{ outline:2px solid var(--accent); outline-offset:2px }
+
+html { scroll-behavior: smooth; }           /* سكرول ناعم */
+.section { scroll-margin-top: 96px; }       /* يعوض الستكي تبس فوق */
+
+
+/* ===== Brand header (centered logo) ===== */
+.brand-header{
+  display:flex;
+  justify-content:center;   /* وسط أفقياً */
+  align-items:center;
+  text-align:center;        /* احتياط لو في ستايل خارجي */
+  padding: 12px 0 8px;
+}
+
+.brand-logo{
+  display:block;
+  width: clamp(90px, 10vw, 120px);  /* أصغر من قبل */
+  height:auto;
+  margin-inline:auto;               /* يضمن الوسط */
+}
+
+/* ===== Full-bleed thin separator (whole page width) ===== */
+.full-bleed-sep{
+  height: 1px;
+  /* خط رمادي شفاف خفيف */
+  background: rgba(0,0,0,0.10);
+  /* يخليه يمتد عرض الصفحة حتى لو داخل الـ container */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  /* مسافة بسيطة فوق/تحت الخط */
+  margin-top: 6px;
+  margin-bottom: 18px;
+}
+
+/* لو تبغيه أنعم شوي بدل اللون فوق استخدم لون الهوية الفاتح:
+.full-bleed-sep{ background: var(--stroke); }
+*/
