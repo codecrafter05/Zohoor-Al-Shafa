@@ -52,6 +52,7 @@ class ProductResource extends Resource
                     ->directory('products/images')
                     ->imageEditor(),
                 Toggle::make('is_active')->label('Active')->default(true),
+                Toggle::make('is_favorite')->label('Favorite')->default(false),
                 TextInput::make('sort_order')->numeric()->default(0)->label('Sort Order'),
             ]);
     }
@@ -68,6 +69,7 @@ class ProductResource extends Resource
                 TextColumn::make('description_ar')->label('Description AR')->toggleable(isToggledHiddenByDefault: true)->limit(50),
                 TextColumn::make('price')->label('Price')->money('BHD', divideBy: 1)->sortable(),
                 IconColumn::make('is_active')->boolean()->label('Active')->sortable(),
+                IconColumn::make('is_favorite')->boolean()->label('Favorite')->sortable(),
             ])
             ->filters([
                 //

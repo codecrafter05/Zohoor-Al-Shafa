@@ -1,13 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FOOD MENU — Zohoor Al Shafa</title>
+  <!-- Primary SEO -->
+  <title>FOOD MENU — Zohoor Al Shafa | Bahrain</title>
+  <meta name="description" content="Discover refined Middle Eastern & Jordanian dishes at Zohoor Al Shafa in Bahrain. All-day dining menu: mezze, salads, buns & toasts, big eats and sides — crafted with premium ingredients.">
+  <meta name="keywords" content="Zohoor Al Shafa, Jordanian cuisine, Arabic restaurant Bahrain, Middle Eastern food, mezze, mansaf, salads, fries, club salads, small eats, big eats">
+  <link rel="canonical" href="{{ url()->current() }}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#472257">
 
-  <!-- Local CSS -->
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FOOD MENU — Zohoor Al Shafa">
+  <meta property="og:description" content="Refined Middle Eastern & Jordanian dishes — all day from 11:30 AM to 11:30 PM.">
+  <meta property="og:url" content="{{ url()->current() }}">
+  <meta property="og:image" content="{{ asset('images/og-cover.jpg') }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Zohoor Al Shafa">
+  <meta property="og:locale" content="en">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FOOD MENU — Zohoor Al Shafa">
+  <meta name="twitter:description" content="Refined Middle Eastern & Jordanian dishes — all day from 11:30 AM to 11:30 PM.">
+  <meta name="twitter:image" content="{{ asset('images/og-cover.jpg') }}">
+
+  <!-- Icons (local) -->
+  <link rel="icon" href="{{ asset('favicon.ico') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('icons/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('icons/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icons/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
+  <!-- JSON-LD: Restaurant -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Zohoor Al Shafa",
+    "url": "{{ url()->current() }}",
+    "image": "{{ asset('images/og-cover.jpg') }}",
+    "servesCuisine": ["Middle Eastern","Jordanian","Arabic"],
+    "priceRange": "BD",
+    "acceptsReservations": true,
+    "openingHours": "Mo-Su 11:30-23:30",
+    "menu": "{{ url()->current() }}",
+    "address": { "@type": "PostalAddress", "addressCountry": "BH" }
+  }
+  </script>
+
+  <!-- JSON-LD: Menu with items on this page -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Menu",
+    "hasMenuSection":[
+      {
+        "@type":"MenuSection",
+        "name":"Most Liked",
+        "hasMenuItem":[
+          {"@type":"MenuItem","name":"Watermelon Fresca","description":"Rocca, mint, sun-dried tomato, feta, watermelon, pumpkin seeds","offers":{"@type":"Offer","priceCurrency":"BHD","price":"4.800"}},
+          {"@type":"MenuItem","name":"Tah-Chin Crispy Rice","description":"Crispy rice bites, saffron shredded chicken, zereshk","offers":{"@type":"Offer","priceCurrency":"BHD","price":"3.500"}},
+          {"@type":"MenuItem","name":"H.L.F.","description":"Halloumi Loaded Fries. Sun-dried tomato marinara, skin-on fries","offers":{"@type":"Offer","priceCurrency":"BHD","price":"5.200"}},
+          {"@type":"MenuItem","name":"Samboosa Bites","description":"Mini samboosa with classic cheese, sumac, chives","offers":{"@type":"Offer","priceCurrency":"BHD","price":"3.200"}},
+          {"@type":"MenuItem","name":"Avo Hallo","description":"Mixed garden lettuce, avocado, cherry tomatoes, crispy rice","offers":{"@type":"Offer","priceCurrency":"BHD","price":"5.400"}}
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- (Optional) hreflang for Arabic when تضيف نسخة عربية
+  <link rel="alternate" href="{{ url()->current() }}" hreflang="en">
+  <link rel="alternate" href="{{ url()->current() }}?lang=ar" hreflang="ar">
+  -->
+
 </head>
+
 <body class="zs-body">
 
   <div class="container">
@@ -47,15 +118,9 @@
     <nav class="tabs-wrap">
       <div class="tabs-scroll">
         <button class="tab active" data-target="#most-liked"><span class="heart">❤</span> Most Liked</button>
-        <button class="tab" data-target="#small-eats">SMALL EATS</button>
-        <button class="tab" data-target="#mezze-bar">MEZZE BAR</button>
-        <button class="tab" data-target="#club-salads">CLUB SALADS</button>
-        <button class="tab" data-target="#buns-toasts">BUNS &amp; TOASTS</button>
-        <button class="tab" data-target="#big-eats">BIG EATS</button>
-        <button class="tab" data-target="#sides">SIDES</button>
+        <!-- Dynamic content will be loaded here -->
       </div>
     </nav>
-
 
     <!-- Section -->
     <section id="most-liked" class="section">
@@ -64,291 +129,10 @@
 
       <!-- Cards Grid -->
       <div class="cards-grid">
-        <!-- Card 1 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Watermelon Fresca</h3>
-            <p class="food-desc">Rocca, mint, sun-dried tomato, feta, watermelon, pumpkin seeds…</p>
-            <div class="price">BD 4.800</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Watermelon Fresca">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>2</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Tah-Chin Crispy Rice</h3>
-            <p class="food-desc">Crispy rice bites, saffron shredded chicken, zereshk…</p>
-            <div class="price">BD 3.500</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Tah-Chin Crispy Rice">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">H.L.F.</h3>
-            <p class="food-desc">Halloumi Loaded Fries. Sun-dried tomato marinara, skin-on fries…</p>
-            <div class="price">BD 5.200</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="H.L.F.">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Samboosa Bites</h3>
-            <p class="food-desc">Mini samboosa with classic cheese, sumac, chives…</p>
-            <div class="price">BD 3.200</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Samboosa Bites">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 5 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Avo Hallo</h3>
-            <p class="food-desc">Mixed garden lettuce, avocado, cherry tomatoes, crispy rice…</p>
-            <div class="price">BD 5.400</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Avo Hallo">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
+        <!-- Dynamic content will be loaded here -->
       </div>
     </section>
 
-    <section id="small-eats" class="section">
-      <h2 class="section-title"> SMALL EATS </h2>
-
-      <!-- Cards Grid -->
-      <div class="cards-grid">
-        <!-- Card 1 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Watermelon Fresca</h3>
-            <p class="food-desc">Rocca, mint, sun-dried tomato, feta, watermelon, pumpkin seeds…</p>
-            <div class="price">BD 4.800</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Watermelon Fresca">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>2</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Tah-Chin Crispy Rice</h3>
-            <p class="food-desc">Crispy rice bites, saffron shredded chicken, zereshk…</p>
-            <div class="price">BD 3.500</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Tah-Chin Crispy Rice">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">H.L.F.</h3>
-            <p class="food-desc">Halloumi Loaded Fries. Sun-dried tomato marinara, skin-on fries…</p>
-            <div class="price">BD 5.200</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="H.L.F.">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Samboosa Bites</h3>
-            <p class="food-desc">Mini samboosa with classic cheese, sumac, chives…</p>
-            <div class="price">BD 3.200</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Samboosa Bites">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 5 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Avo Hallo</h3>
-            <p class="food-desc">Mixed garden lettuce, avocado, cherry tomatoes, crispy rice…</p>
-            <div class="price">BD 5.400</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Avo Hallo">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="mezze-bar" class="section">
-      <h2 class="section-title"> MEZZE BAR </h2>
-
-      <!-- Cards Grid -->
-      <div class="cards-grid">
-        <!-- Card 1 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Watermelon Fresca</h3>
-            <p class="food-desc">Rocca, mint, sun-dried tomato, feta, watermelon, pumpkin seeds…</p>
-            <div class="price">BD 4.800</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Watermelon Fresca">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>2</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Tah-Chin Crispy Rice</h3>
-            <p class="food-desc">Crispy rice bites, saffron shredded chicken, zereshk…</p>
-            <div class="price">BD 3.500</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Tah-Chin Crispy Rice">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">H.L.F.</h3>
-            <p class="food-desc">Halloumi Loaded Fries. Sun-dried tomato marinara, skin-on fries…</p>
-            <div class="price">BD 5.200</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="H.L.F.">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Samboosa Bites</h3>
-            <p class="food-desc">Mini samboosa with classic cheese, sumac, chives…</p>
-            <div class="price">BD 3.200</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Samboosa Bites">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Tah-Chin Crispy Rice</h3>
-            <p class="food-desc">Crispy rice bites, saffron shredded chicken, zereshk…</p>
-            <div class="price">BD 3.500</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Tah-Chin Crispy Rice">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Tah-Chin Crispy Rice</h3>
-            <p class="food-desc">Crispy rice bites, saffron shredded chicken, zereshk…</p>
-            <div class="price">BD 3.500</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Tah-Chin Crispy Rice">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-
-        <!-- Card 5 -->
-        <article class="food-card">
-          <div class="info">
-            <h3 class="food-name">Avo Hallo</h3>
-            <p class="food-desc">Mixed garden lettuce, avocado, cherry tomatoes, crispy rice…</p>
-            <div class="price">BD 5.400</div>
-          </div>
-          <div class="thumb">
-            <img src="{{ asset('images/zz.png') }}" alt="Avo Hallo">
-            <span class="like-badge">
-              <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/></svg>
-              <b>1</b>
-            </span>
-          </div>
-        </article>
-      </div>
-    </section>
 
     <!-- Food Details Modal -->
     <div id="food-modal" class="modal" aria-hidden="true">

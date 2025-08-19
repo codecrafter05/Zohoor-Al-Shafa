@@ -15,19 +15,40 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/menu');
             const data = await response.json();
             
-            // Populate categories in tabs
-            populateCategories(data.categories);
+            // Populate categories in tabs (only those with products)
+            populateCategories(data.categories, data.products);
             
             // Populate products in sections
             populateProducts(data.products, data.categories);
+            
+            // Populate favorites in most-liked section
+            populateFavorites(data.favorites);
             
         } catch (error) {
             console.error('Error loading menu data:', error);
         }
     }
     
-    // Populate categories in tabs
-    function populateCategories(categories) {
+    // Populate favorites in most-liked section
+    function populateFavorites(favorites) {
+        const mostLikedSection = document.getElementById('most-liked');
+        if (!mostLikedSection) return;
+        
+        const cardsGrid = mostLikedSection.querySelector('.cards-grid');
+        if (cardsGrid) {
+            cardsGrid.innerHTML = '';
+            favorites.forEach(product => {
+                const card = createProductCard(product, true);
+                cardsGrid.appendChild(card);
+            });
+        }
+        
+        // Reinitialize card functionality
+        initializeCards();
+    }
+    
+    // Populate categories in tabs (only those with products)
+    function populateCategories(categories, products) {
         const tabsContainer = document.querySelector('.tabs-scroll');
         if (!tabsContainer) return;
         
@@ -35,13 +56,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const existingTabs = tabsContainer.querySelectorAll('.tab:not([data-target="#most-liked"])');
         existingTabs.forEach(tab => tab.remove());
         
-        // Add category tabs
+        // Group products by category to count them
+        const productsByCategory = {};
+        products.forEach(product => {
+            if (!productsByCategory[product.category]) {
+                productsByCategory[product.category] = [];
+            }
+            productsByCategory[product.category].push(product);
+        });
+        
+        // Add category tabs only for categories with products
         categories.forEach(category => {
-            const tab = document.createElement('button');
-            tab.className = 'tab';
-            tab.setAttribute('data-target', `#${category.slug}`);
-            tab.textContent = category.label.en;
-            tabsContainer.appendChild(tab);
+            const categoryProducts = productsByCategory[category.slug] || [];
+            if (categoryProducts.length > 0) {
+                const tab = document.createElement('button');
+                tab.className = 'tab';
+                tab.setAttribute('data-target', `#${category.slug}`);
+                tab.textContent = category.label.en;
+                tabsContainer.appendChild(tab);
+            }
         });
         
         // Reinitialize tab functionality
@@ -63,27 +96,35 @@ document.addEventListener('DOMContentLoaded', () => {
         categories.forEach(category => {
             const sectionId = category.slug;
             const existingSection = document.getElementById(sectionId);
+            const categoryProducts = productsByCategory[category.slug] || [];
             
-            if (existingSection) {
-                // Update existing section
-                const cardsGrid = existingSection.querySelector('.cards-grid');
-                if (cardsGrid) {
-                    cardsGrid.innerHTML = '';
-                    const categoryProducts = productsByCategory[category.slug] || [];
-                    categoryProducts.forEach(product => {
-                        const card = createProductCard(product);
-                        cardsGrid.appendChild(card);
-                    });
+            // Only create/update section if there are products
+            if (categoryProducts.length > 0) {
+                if (existingSection) {
+                    // Update existing section
+                    const cardsGrid = existingSection.querySelector('.cards-grid');
+                    if (cardsGrid) {
+                        cardsGrid.innerHTML = '';
+                        categoryProducts.forEach(product => {
+                            const card = createProductCard(product, false);
+                            cardsGrid.appendChild(card);
+                        });
+                    }
+                } else {
+                    // Create new section
+                    const newSection = createCategorySection(category, categoryProducts);
+                    const container = document.querySelector('.container');
+                    const lastSection = container.querySelector('.section:last-of-type');
+                    if (lastSection) {
+                        lastSection.after(newSection);
+                    } else {
+                        container.appendChild(newSection);
+                    }
                 }
             } else {
-                // Create new section
-                const newSection = createCategorySection(category, productsByCategory[category.slug] || []);
-                const container = document.querySelector('.container');
-                const lastSection = container.querySelector('.section:last-of-type');
-                if (lastSection) {
-                    lastSection.after(newSection);
-                } else {
-                    container.appendChild(newSection);
+                // Remove section if it exists but has no products
+                if (existingSection) {
+                    existingSection.remove();
                 }
             }
         });
@@ -93,9 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Create product card
-    function createProductCard(product) {
+    function createProductCard(product, isFavorite = false) {
         const card = document.createElement('article');
         card.className = 'food-card';
+        card.setAttribute('data-product-id', product.id);
+        
+        const favoriteClass = isFavorite ? 'favorite' : '';
+        const favoriteIcon = isFavorite ? '❤' : '🤍';
         
         card.innerHTML = `
             <div class="info">
@@ -105,11 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="thumb">
                 <img src="${product.image || '/images/zz.png'}" alt="${product.name.en}">
-                <span class="like-badge">
+                <span class="like-badge ${favoriteClass}">
                     <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                         <path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/>
                     </svg>
-                    <b>1</b>
+                    <b>${favoriteIcon}</b>
                 </span>
             </div>
         `;
@@ -124,8 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         section.className = 'section';
         
         const productsHtml = products.map(product => {
+            const favoriteClass = product.is_favorite ? 'favorite' : '';
+            const favoriteIcon = product.is_favorite ? '❤' : '🤍';
+            
             return `
-                <article class="food-card">
+                <article class="food-card" data-product-id="${product.id}">
                     <div class="info">
                         <h3 class="food-name">${product.name.en}</h3>
                         <p class="food-desc">${product.description.en || ''}</p>
@@ -133,11 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="thumb">
                         <img src="${product.image || '/images/zz.png'}" alt="${product.name.en}">
-                        <span class="like-badge">
+                        <span class="like-badge ${favoriteClass}">
                             <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                                 <path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/>
                             </svg>
-                            <b>1</b>
+                            <b>${favoriteIcon}</b>
                         </span>
                     </div>
                 </article>
