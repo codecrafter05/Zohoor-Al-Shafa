@@ -34,48 +34,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icons/favicon-16x16.png') }}">
   <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 
-  <!-- JSON-LD: Restaurant -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Restaurant",
-    "name": "Zohoor Al Shafa",
-    "url": "{{ url()->current() }}",
-    "image": "{{ asset('images/og-cover.jpg') }}",
-    "servesCuisine": ["Middle Eastern","Jordanian","Arabic"],
-    "priceRange": "BD",
-    "acceptsReservations": true,
-    "openingHours": "Mo-Su 11:30-23:30",
-    "menu": "{{ url()->current() }}",
-    "address": { "@type": "PostalAddress", "addressCountry": "BH" }
-  }
-  </script>
-
-  <!-- JSON-LD: Menu with items on this page -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Menu",
-    "hasMenuSection":[
-      {
-        "@type":"MenuSection",
-        "name":"Most Liked",
-        "hasMenuItem":[
-          {"@type":"MenuItem","name":"Watermelon Fresca","description":"Rocca, mint, sun-dried tomato, feta, watermelon, pumpkin seeds","offers":{"@type":"Offer","priceCurrency":"BHD","price":"4.800"}},
-          {"@type":"MenuItem","name":"Tah-Chin Crispy Rice","description":"Crispy rice bites, saffron shredded chicken, zereshk","offers":{"@type":"Offer","priceCurrency":"BHD","price":"3.500"}},
-          {"@type":"MenuItem","name":"H.L.F.","description":"Halloumi Loaded Fries. Sun-dried tomato marinara, skin-on fries","offers":{"@type":"Offer","priceCurrency":"BHD","price":"5.200"}},
-          {"@type":"MenuItem","name":"Samboosa Bites","description":"Mini samboosa with classic cheese, sumac, chives","offers":{"@type":"Offer","priceCurrency":"BHD","price":"3.200"}},
-          {"@type":"MenuItem","name":"Avo Hallo","description":"Mixed garden lettuce, avocado, cherry tomatoes, crispy rice","offers":{"@type":"Offer","priceCurrency":"BHD","price":"5.400"}}
-        ]
-      }
-    ]
-  }
-  </script>
-
-  <!-- (Optional) hreflang for Arabic when تضيف نسخة عربية
-  <link rel="alternate" href="{{ url()->current() }}" hreflang="en">
-  <link rel="alternate" href="{{ url()->current() }}?lang=ar" hreflang="ar">
-  -->
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 </head>
 
