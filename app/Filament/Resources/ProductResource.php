@@ -16,11 +16,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use App\Models\Category;
-use App\Models\Subcategory;
 
 class ProductResource extends Resource
 {
@@ -39,17 +39,10 @@ class ProductResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required(),
-                Select::make('subcategory_id')
-                    ->label('Subcategory')
-                    ->options(function (callable $get) {
-                        $categoryId = $get('category_id');
-                        if (!$categoryId) return [];
-                        return Subcategory::where('category_id', $categoryId)->orderBy('label_en')->pluck('label_en', 'id');
-                    })
-                    ->searchable()
-                    ->preload(),
                 TextInput::make('name_en')->label('Name (EN)')->required()->maxLength(255),
                 TextInput::make('name_ar')->label('Name (AR)')->required()->maxLength(255),
+                Textarea::make('description_en')->label('Description (EN)')->rows(3)->maxLength(500),
+                Textarea::make('description_ar')->label('Description (AR)')->rows(3)->maxLength(500),
                 TextInput::make('price')->label('Price')->numeric()->required()->step('0.01'),
                 TextInput::make('currency')->label('Currency')->default('BHD')->disabled(),
                 FileUpload::make('image_path')
@@ -69,9 +62,10 @@ class ProductResource extends Resource
             ->columns([
                 ImageColumn::make('image_path')->label('Image')->disk('public'),
                 TextColumn::make('category.label_en')->label('Category')->sortable()->searchable(),
-                TextColumn::make('subcategory.label_en')->label('Subcategory')->toggleable(isToggledHiddenByDefault: true)->sortable()->searchable(),
                 TextColumn::make('name_en')->label('Name EN')->sortable()->searchable(),
                 TextColumn::make('name_ar')->label('Name AR')->toggleable(isToggledHiddenByDefault: true)->sortable()->searchable(),
+                TextColumn::make('description_en')->label('Description EN')->toggleable(isToggledHiddenByDefault: true)->limit(50),
+                TextColumn::make('description_ar')->label('Description AR')->toggleable(isToggledHiddenByDefault: true)->limit(50),
                 TextColumn::make('price')->label('Price')->money('BHD', divideBy: 1)->sortable(),
                 IconColumn::make('is_active')->boolean()->label('Active')->sortable(),
             ])

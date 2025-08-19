@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
     protected $fillable = [
-        'category_id', 'subcategory_id', 'name_en', 'name_ar', 'price', 'currency', 'image_path', 'sort_order', 'is_active',
+        'category_id', 'name_en', 'name_ar', 'description_ar', 'description_en', 'price', 'currency', 'image_path', 'sort_order', 'is_active',
     ];
 
     protected $casts = [
@@ -19,10 +19,5 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function subcategory(): BelongsTo
-    {
-        return $this->belongsTo(Subcategory::class);
     }
 }

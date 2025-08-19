@@ -13,12 +13,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TextInput\Mask; 
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
 
 class CategoryResource extends Resource
 {
@@ -33,13 +31,6 @@ class CategoryResource extends Resource
                 TextInput::make('label_en')->label('Name (EN)')->required()->maxLength(255),
                 TextInput::make('label_ar')->label('Name (AR)')->required()->maxLength(255),
                 TextInput::make('slug')->label('Slug')->disabled()->dehydrated(false),
-                FileUpload::make('icon_path')
-                    ->label('Icon')
-                    ->image()
-                    ->disk('public')
-                    ->directory('categories/icons')
-                    ->imageEditor()
-                    ->required(false),
                 Toggle::make('is_active')->label('Active')->default(true),
                 TextInput::make('sort_order')->numeric()->default(0)->label('Sort Order'),
             ]);
@@ -49,7 +40,6 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('icon_path')->label('Icon')->disk('public'),
                 TextColumn::make('label_en')->label('EN')->searchable()->sortable(),
                 TextColumn::make('label_ar')->label('AR')->searchable()->sortable(),
                 TextColumn::make('slug')->label('Slug')->toggleable(isToggledHiddenByDefault: true),
