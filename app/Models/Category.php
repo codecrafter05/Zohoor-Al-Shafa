@@ -9,13 +9,8 @@ use Illuminate\Support\Str;
 class Category extends Model
 {
     protected $fillable = [
-        'slug', 'label_en', 'label_ar', 'icon_path', 'sort_order', 'is_active',
+        'slug', 'label_en', 'label_ar', 'sort_order', 'is_active',
     ];
-
-    public function subcategories(): HasMany
-    {
-        return $this->hasMany(Subcategory::class);
-    }
 
     public function products(): HasMany
     {
