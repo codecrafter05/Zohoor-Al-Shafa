@@ -72,11 +72,12 @@ body.zs-body{
 
 /* ===== Topbar ===== */
 .topbar{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:16px;
-  padding-bottom:16px;
+  display: grid;
+  grid-template-columns: 1fr auto;  /* العنوان يتمدد + الزر على الطرف */
+  align-items: end;
+  gap: 16px;
+  padding-bottom: 16px;
+  width: 100%;
 }
 .page-title{
   margin:0;
@@ -90,7 +91,8 @@ body.zs-body{
   color:var(--muted);
   font-size:14px;
 }
-.topbar-right{display:flex; gap:10px}
+.topbar-left{ min-width: 0; }        /* يمنع العنوان يكسر التخطيط */
+.topbar-right{ justify-self: end; }  /* الزر دائمًا على طرف الحاوية */
 .icon-btn{
   display:inline-grid;
   place-items:center;
@@ -103,6 +105,7 @@ body.zs-body{
 }
 .icon-btn svg{fill:var(--brand-ink)}
 .icon-btn:hover{transform:translateY(-1px)}
+
 
 /* Language toggle button */
 .language-toggle {
@@ -333,3 +336,6 @@ html { scroll-behavior: smooth; }           /* سكرول ناعم */
 .full-bleed-sep{ background: var(--stroke); }
 */
 
+html[dir="rtl"] .topbar{
+  grid-template-columns: auto 1fr;  /* بدّل الأعمدة في RTL */
+}
