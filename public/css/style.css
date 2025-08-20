@@ -12,6 +12,46 @@
   --shadow:0 8px 24px rgba(33,18,36,.08);
 }
 
+/* ===== RTL Support ===== */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .topbar {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .tab .heart {
+  margin-right: 0;
+  margin-left: 6px;
+}
+
+[dir="rtl"] .food-card {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .food-card .info {
+  text-align: right;
+}
+
+[dir="rtl"] .food-card .thumb {
+  order: -1;
+}
+
+[dir="rtl"] .modal-content {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .modal-info {
+  text-align: right;
+}
+
+[dir="rtl"] .modal-close {
+  right: auto;
+  left: 16px;
+}
+
 *{box-sizing:border-box}
 html,body{height:100%}
 body.zs-body{
@@ -63,6 +103,30 @@ body.zs-body{
 }
 .icon-btn svg{fill:var(--brand-ink)}
 .icon-btn:hover{transform:translateY(-1px)}
+
+/* Language toggle button */
+.language-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  min-width: 60px;
+}
+
+.language-toggle .lang-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand-ink);
+}
+
+[dir="rtl"] .language-toggle {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .language-toggle .lang-indicator {
+  order: -1;
+}
 
 /* ===== Tabs ===== */
 .tabs-wrap{
@@ -268,3 +332,4 @@ html { scroll-behavior: smooth; }           /* سكرول ناعم */
 /* لو تبغيه أنعم شوي بدل اللون فوق استخدم لون الهوية الفاتح:
 .full-bleed-sep{ background: var(--stroke); }
 */
+
