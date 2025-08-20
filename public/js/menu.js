@@ -1,6 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Language state
+    let currentLanguage = localStorage.getItem('language') || 'en'; // Get saved language or default to 'en'
+    let menuData = null; // Store menu data for language switching
+    
     // Load menu data from backend
     loadMenuData();
+    
+    // Apply saved language on page load
+    if (currentLanguage === 'ar') {
+        // Set initial language state
+        document.documentElement.lang = currentLanguage;
+        document.documentElement.dir = 'rtl';
+        updateLanguageIndicator();
+    }
     
     const cards = document.querySelectorAll('.food-card');
     const modal = document.getElementById('food-modal');
@@ -8,12 +20,135 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTitle = document.getElementById('modal-title');
     const modalDesc = document.getElementById('modal-desc');
     const modalPrice = document.getElementById('modal-price');
+    const languageToggle = document.getElementById('language-toggle');
+    
+    // Language toggle functionality
+    if (languageToggle) {
+        languageToggle.addEventListener('click', () => {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            localStorage.setItem('language', currentLanguage); // Save language preference
+            updateLanguage();
+        });
+    }
+    
+    // Update language indicator
+    function updateLanguageIndicator() {
+        const langIndicator = document.querySelector('.lang-indicator');
+        if (langIndicator) {
+            // Show the language that will be switched TO, not the current language
+            langIndicator.textContent = currentLanguage === 'en' ? 'AR' : 'EN';
+        }
+    }
+    
+    // Update language across the entire page
+    function updateLanguage() {
+        // Update HTML lang and dir attributes
+        document.documentElement.lang = currentLanguage;
+        document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+        
+        // Update page title
+        const pageTitle = document.querySelector('.page-title');
+        if (pageTitle) {
+            pageTitle.textContent = currentLanguage === 'en' ? 'FOOD MENU' : 'قائمة الطعام';
+        }
+        
+        // Update subtext
+        const subtext = document.querySelector('.subtext');
+        if (subtext) {
+            subtext.textContent = currentLanguage === 'en' ? 'All Day from 11:30 AM to 11:30 PM' : 'طوال اليوم من 11:30 صباحاً إلى 11:30 مساءً';
+        }
+        
+        // Update most liked section
+        const mostLikedTitle = document.querySelector('#most-liked .section-title');
+        if (mostLikedTitle) {
+            mostLikedTitle.innerHTML = currentLanguage === 'en' 
+                ? '<span class="heart">❤</span> Most Liked <span class="heart">❤</span>'
+                : '<span class="heart">❤</span> الأكثر إعجاباً <span class="heart">❤</span>';
+        }
+        
+        const mostLikedSub = document.querySelector('#most-liked .section-sub');
+        if (mostLikedSub) {
+            mostLikedSub.textContent = currentLanguage === 'en' 
+                ? 'According to real guest likes'
+                : 'حسب إعجابات الضيوف الحقيقية';
+        }
+        
+        // Update most liked tab
+        const mostLikedTab = document.querySelector('.tab[data-target="#most-liked"]');
+        if (mostLikedTab) {
+            mostLikedTab.innerHTML = currentLanguage === 'en' 
+                ? '<span class="heart">❤</span> Most Liked'
+                : '<span class="heart">❤</span> الأكثر إعجاباً';
+        }
+        
+        // Re-populate content with new language
+        if (menuData) {
+            updateCategoryTabs();
+            updateSectionTitles();
+            populateProducts(menuData.products, menuData.categories);
+            populateFavorites(menuData.favorites);
+        }
+        
+        // Update modal if it's open
+        if (modal.classList.contains('open')) {
+            updateModalLanguage();
+        }
+        
+        // Update language indicator
+        updateLanguageIndicator();
+    }
+    
+    // Update category tabs when language changes
+    function updateCategoryTabs() {
+        const tabs = document.querySelectorAll('.tab[data-category-slug]');
+        tabs.forEach(tab => {
+            const categorySlug = tab.getAttribute('data-category-slug');
+            const category = menuData.categories.find(c => c.slug === categorySlug);
+            if (category) {
+                tab.textContent = currentLanguage === 'en' ? category.label.en : (category.label.ar || category.label.en);
+            }
+        });
+    }
+    
+    // Update section titles when language changes
+    function updateSectionTitles() {
+        const sections = document.querySelectorAll('.section[id]');
+        sections.forEach(section => {
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('.section-title');
+            if (sectionTitle && menuData) {
+                const category = menuData.categories.find(c => c.slug === sectionId);
+                if (category) {
+                    sectionTitle.textContent = currentLanguage === 'en' ? category.label.en : (category.label.ar || category.label.en);
+                }
+            }
+        });
+    }
+    
+    // Update modal content when language changes
+    function updateModalLanguage() {
+        const productId = modalTitle.getAttribute('data-product-id');
+        if (productId && menuData) {
+            const product = menuData.products.find(p => p.id == productId);
+            if (product) {
+                const productName = currentLanguage === 'en' ? product.name.en : (product.name.ar || product.name.en);
+                const productDesc = currentLanguage === 'en' ? (product.description.en || '') : (product.description.ar || product.description.en || '');
+                
+                modalTitle.textContent = productName;
+                modalDesc.textContent = productDesc;
+                modalImg.setAttribute('alt', productName);
+            }
+        }
+    }
   
     // Load menu data from API
     async function loadMenuData() {
         try {
             const response = await fetch('/api/menu');
             const data = await response.json();
+            
+            // Store menu data for language switching
+            menuData = data;
             
             // Populate categories in tabs (only those with products)
             populateCategories(data.categories, data.products);
@@ -23,6 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Populate favorites in most-liked section
             populateFavorites(data.favorites);
+            
+            // Apply saved language after data is loaded
+            if (currentLanguage === 'ar') {
+                updateLanguage();
+            }
             
         } catch (error) {
             console.error('Error loading menu data:', error);
@@ -72,7 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tab = document.createElement('button');
                 tab.className = 'tab';
                 tab.setAttribute('data-target', `#${category.slug}`);
-                tab.textContent = category.label.en;
+                tab.setAttribute('data-category-slug', category.slug);
+                tab.textContent = currentLanguage === 'en' ? category.label.en : (category.label.ar || category.label.en);
                 tabsContainer.appendChild(tab);
             }
         });
@@ -142,20 +283,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const favoriteClass = isFavorite ? 'favorite' : '';
         const favoriteIcon = isFavorite ? '❤' : '🤍';
         
+        const productName = currentLanguage === 'en' ? product.name.en : (product.name.ar || product.name.en);
+        const productDesc = currentLanguage === 'en' ? (product.description.en || '') : (product.description.ar || product.description.en || '');
+        
         card.innerHTML = `
             <div class="info">
-                <h3 class="food-name">${product.name.en}</h3>
-                <p class="food-desc">${product.description.en || ''}</p>
+                <h3 class="food-name">${productName}</h3>
+                <p class="food-desc">${productDesc}</p>
                 <div class="price">BD ${product.price.toFixed(3)}</div>
             </div>
             <div class="thumb">
-                <img src="${product.image || '/images/zz.png'}" alt="${product.name.en}">
-                <span class="like-badge ${favoriteClass}">
-                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                        <path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/>
-                    </svg>
-                    <b>${favoriteIcon}</b>
-                </span>
+                <img src="${product.image || '/images/zz.png'}" alt="${productName}">
             </div>
         `;
         
@@ -171,29 +309,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const productsHtml = products.map(product => {
             const favoriteClass = product.is_favorite ? 'favorite' : '';
             const favoriteIcon = product.is_favorite ? '❤' : '🤍';
+            const productName = currentLanguage === 'en' ? product.name.en : (product.name.ar || product.name.en);
+            const productDesc = currentLanguage === 'en' ? (product.description.en || '') : (product.description.ar || product.description.en || '');
             
             return `
                 <article class="food-card" data-product-id="${product.id}">
                     <div class="info">
-                        <h3 class="food-name">${product.name.en}</h3>
-                        <p class="food-desc">${product.description.en || ''}</p>
+                        <h3 class="food-name">${productName}</h3>
+                        <p class="food-desc">${productDesc}</p>
                         <div class="price">BD ${product.price.toFixed(3)}</div>
                     </div>
                     <div class="thumb">
-                        <img src="${product.image || '/images/zz.png'}" alt="${product.name.en}">
-                        <span class="like-badge ${favoriteClass}">
-                            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                                <path d="M12 21s-6.716-4.507-9.193-7.02C.78 11.947.5 9.167 2.21 7.457a4.5 4.5 0 0 1 6.364 0L12 10.88l3.426-3.423a4.5 4.5 0 0 1 6.364 6.364C18.716 16.493 12 21 12 21z"/>
-                            </svg>
-                            <b>${favoriteIcon}</b>
-                        </span>
+                        <img src="${product.image || '/images/zz.png'}" alt="${productName}">
                     </div>
                 </article>
             `;
         }).join('');
         
+        const categoryTitle = currentLanguage === 'en' ? category.label.en : (category.label.ar || category.label.en);
+        
         section.innerHTML = `
-            <h2 class="section-title">${category.label.en}</h2>
+            <h2 class="section-title">${categoryTitle}</h2>
             <div class="cards-grid">
                 ${productsHtml}
             </div>
@@ -269,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const imgAlt = imgEl ? (imgEl.getAttribute('alt') || name) : name;
   
       modalTitle.textContent = name;
+      modalTitle.setAttribute('data-product-id', fromCard.getAttribute('data-product-id'));
       modalDesc.textContent = fullDesc;
       modalPrice.textContent = price;
       if (imgSrc) modalImg.setAttribute('src', imgSrc);
@@ -303,5 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize existing functionality
     initializeTabs();
     initializeCards();
+    
+    // Initialize language indicator
+    updateLanguageIndicator();
 });
   

@@ -2,6 +2,8 @@
 <html lang="en" dir="ltr">
   
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <!-- Primary SEO -->
   <title>FOOD MENU — Zohoor Al Shafa | Bahrain</title>
   <meta name="description" content="Discover refined Middle Eastern & Jordanian dishes at Zohoor Al Shafa in Bahrain. All-day dining menu: mezze, salads, buns & toasts, big eats and sides — crafted with premium ingredients.">
@@ -28,7 +30,7 @@
   <meta name="twitter:image" content="{{ asset('images/og-cover.jpg') }}">
 
   <!-- Icons (local) -->
-  <link rel="icon" href="{{ asset('favicon.ico') }}">
+  <link rel="icon" href="{{ asset('1.pdf.png') }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('icons/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('icons/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icons/favicon-16x16.png') }}">
@@ -58,17 +60,13 @@
       </div>
 
       <div class="topbar-right">
-        <!-- search -->
-        <button class="icon-btn" aria-label="Search">
+        <!-- language toggle -->
+        <button class="icon-btn language-toggle" id="language-toggle" aria-label="Toggle Language" title="تغيير اللغة / Change Language">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+            <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.83-6.99l2.53 2.53c.39.39.39 1.02 0 1.41z"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/>
           </svg>
-        </button>
-        <!-- filter -->
-        <button class="icon-btn" aria-label="Filters">
-          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path d="M3 5h18v2H3zm4 6h10v2H7zm3 6h4v2h-4z"/>
-          </svg>
+          <span class="lang-indicator">EN</span>
         </button>
       </div>
     </header>
