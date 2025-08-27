@@ -32,7 +32,7 @@ class CategoryResource extends Resource
                 TextInput::make('label_ar')->label('Name (AR)')->required()->maxLength(255),
                 TextInput::make('slug')->label('Slug')->disabled()->dehydrated(false),
                 Toggle::make('is_active')->label('Active')->default(true),
-                TextInput::make('sort_order')->numeric()->default(0)->label('Sort Order'),
+                // إزالة حقل sort_order من النموذج لأنه سيتم التحكم به من الجدول
             ]);
     }
 
@@ -46,6 +46,8 @@ class CategoryResource extends Resource
                 TextColumn::make('sort_order')->sortable(),
                 IconColumn::make('is_active')->boolean()->label('Active')->sortable(),
             ])
+            ->defaultSort('sort_order', 'asc') // ترتيب افتراضي حسب sort_order
+            ->reorderable('sort_order') // إضافة خاصية السحب والإفلات
             ->filters([
                 //
             ])

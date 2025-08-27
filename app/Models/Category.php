@@ -17,8 +17,13 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    // إضافة scope للترتيب الافتراضي
     protected static function booted(): void
     {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('sort_order', 'asc');
+        });
+
         static::creating(function (Category $model) {
             if (empty($model->slug)) {
                 $model->slug = static::generateUniqueSlug($model->label_en);
