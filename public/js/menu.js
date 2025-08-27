@@ -17,9 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.food-card');
     const modal = document.getElementById('food-modal');
     const modalImg = document.getElementById('modal-img');
-    const modalTitle = document.getElementById('modal-title');
-    const modalDesc = document.getElementById('modal-desc');
-    const modalPrice = document.getElementById('modal-price');
     const languageToggle = document.getElementById('language-toggle');
     
     // Language toggle functionality
@@ -89,10 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             populateFavorites(menuData.favorites);
         }
         
-        // Update modal if it's open
-        if (modal.classList.contains('open')) {
-            updateModalLanguage();
-        }
+
         
         // Update language indicator
         updateLanguageIndicator();
@@ -125,21 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Update modal content when language changes
-    function updateModalLanguage() {
-        const productId = modalTitle.getAttribute('data-product-id');
-        if (productId && menuData) {
-            const product = menuData.products.find(p => p.id == productId);
-            if (product) {
-                const productName = currentLanguage === 'en' ? product.name.en : (product.name.ar || product.name.en);
-                const productDesc = currentLanguage === 'en' ? (product.description.en || '') : (product.description.ar || product.description.en || '');
-                
-                modalTitle.textContent = productName;
-                modalDesc.textContent = productDesc;
-                modalImg.setAttribute('alt', productName);
-            }
-        }
-    }
+
   
     // Load menu data from API
     async function loadMenuData() {
@@ -392,22 +372,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function openModal(fromCard){
       // استخرج البيانات من الكارد
       const nameEl = fromCard.querySelector('.food-name');
-      const descEl = fromCard.querySelector('.food-desc');
-      const priceEl = fromCard.querySelector('.price');
       const imgEl = fromCard.querySelector('.thumb img');
   
       const name = nameEl ? nameEl.textContent.trim() : '';
-      const fullDesc = (descEl?.dataset.full || descEl?.textContent || '')
-                        .replace(/…+$/,'')
-                        .trim();
-      const price = priceEl ? priceEl.textContent.trim() : '';
       const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
       const imgAlt = imgEl ? (imgEl.getAttribute('alt') || name) : name;
   
-      modalTitle.textContent = name;
-      modalTitle.setAttribute('data-product-id', fromCard.getAttribute('data-product-id'));
-      modalDesc.textContent = fullDesc;
-      modalPrice.textContent = price;
+      // تحديث الصورة فقط
       if (imgSrc) modalImg.setAttribute('src', imgSrc);
       modalImg.setAttribute('alt', imgAlt);
   
