@@ -99,13 +99,8 @@
         <button class="modal-close" aria-label="Close" data-close="true">×</button>
 
         <div class="modal-content">
-          <div class="modal-thumb">
-            <img id="modal-img" src="{{ asset('images/zz.png') }}" alt="">
-          </div>
-          <div class="modal-info">
-            <h3 id="modal-title" class="modal-name">Dish name</h3>
-            <p id="modal-desc" class="modal-desc">Full description</p>
-            <div id="modal-price" class="modal-price">BD 0.000</div>
+          <div class="modal-image-container">
+            <img id="modal-img" src="{{ asset('images/zz.png') }}" alt="Product Image">
           </div>
         </div>
       </div>
