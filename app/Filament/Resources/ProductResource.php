@@ -53,7 +53,7 @@ class ProductResource extends Resource
                     ->imageEditor(),
                 Toggle::make('is_active')->label('Active')->default(true),
                 Toggle::make('is_favorite')->label('Favorite')->default(false),
-                TextInput::make('sort_order')->numeric()->default(0)->label('Sort Order'),
+                // إزالة حقل sort_order من النموذج لأنه سيتم التحكم به من الجدول
             ]);
     }
 
@@ -71,13 +71,14 @@ class ProductResource extends Resource
                 IconColumn::make('is_active')->boolean()->label('Active')->sortable(),
                 IconColumn::make('is_favorite')->boolean()->label('Favorite')->sortable(),
             ])
+            ->defaultSort('sort_order', 'asc') // ترتيب افتراضي حسب sort_order
+            ->reorderable('sort_order') // إضافة خاصية السحب والإفلات
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

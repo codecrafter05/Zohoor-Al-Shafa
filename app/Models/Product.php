@@ -21,4 +21,12 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    // إضافة scope للترتيب الافتراضي
+    protected static function booted(): void
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('sort_order', 'asc');
+        });
+    }
 }
