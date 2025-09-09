@@ -43,7 +43,7 @@ class ProductResource extends Resource
                 TextInput::make('name_ar')->label('Name (AR)')->required()->maxLength(255),
                 Textarea::make('description_en')->label('Description (EN)')->rows(3)->maxLength(500),
                 Textarea::make('description_ar')->label('Description (AR)')->rows(3)->maxLength(500),
-                TextInput::make('price')->label('Price')->numeric()->required()->step('0.01'),
+                TextInput::make('price')->label('Price')->numeric()->required()->step('0.001'),
                 TextInput::make('currency')->label('Currency')->default('BHD')->disabled(),
                 FileUpload::make('image_path')
                     ->label('Image')
@@ -67,7 +67,7 @@ class ProductResource extends Resource
                 TextColumn::make('name_ar')->label('Name AR')->toggleable(isToggledHiddenByDefault: true)->sortable()->searchable(),
                 TextColumn::make('description_en')->label('Description EN')->toggleable(isToggledHiddenByDefault: true)->limit(50),
                 TextColumn::make('description_ar')->label('Description AR')->toggleable(isToggledHiddenByDefault: true)->limit(50),
-                TextColumn::make('price')->label('Price')->money('BHD', divideBy: 1)->sortable(),
+                TextColumn::make('price')->label('Price')->money('BHD', divideBy: 1, locale: 'en')->sortable(),
                 IconColumn::make('is_active')->boolean()->label('Active')->sortable(),
                 IconColumn::make('is_favorite')->boolean()->label('Favorite')->sortable(),
             ])
