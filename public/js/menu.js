@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLanguage = localStorage.getItem('language') || 'en'; // Get saved language or default to 'en'
     let menuData = null; // Store menu data for language switching
     
+    // PWA Offline Support
+    let isOnline = navigator.onLine;
+    let offlineIndicator = null;
+    
     // Load menu data from backend
     loadMenuData();
     
@@ -130,6 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Store menu data for language switching
             menuData = data;
             
+            // Cache menu data for offline use
+            localStorage.setItem('zohoor_menu_data', JSON.stringify(data));
+            localStorage.setItem('zohoor_menu_cache_time', Date.now().toString());
+            
             // Populate categories in tabs (only those with products)
             populateCategories(data.categories, data.products);
             
@@ -144,8 +152,130 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateLanguage();
             }
             
+            // Hide offline indicator if showing
+            hideOfflineIndicator();
+            
         } catch (error) {
             console.error('Error loading menu data:', error);
+            
+            // Try to load from cache
+            loadFromCache();
+        }
+    }
+    
+    // Load data from cache when offline
+    function loadFromCache() {
+        try {
+            const cachedData = localStorage.getItem('zohoor_menu_data');
+            const cacheTime = localStorage.getItem('zohoor_menu_cache_time');
+            
+            if (cachedData && cacheTime) {
+                const data = JSON.parse(cachedData);
+                const cacheAge = Date.now() - parseInt(cacheTime);
+                
+                // Use cache if less than 24 hours old
+                if (cacheAge < 24 * 60 * 60 * 1000) {
+                    console.log('Loading menu data from cache');
+                    menuData = data;
+                    
+                    // Populate with cached data
+                    populateCategories(data.categories, data.products);
+                    populateProducts(data.products, data.categories);
+                    populateFavorites(data.favorites);
+                    
+                    // Apply saved language
+                    if (currentLanguage === 'ar') {
+                        updateLanguage();
+                    }
+                    
+                    // Show offline indicator
+                    showOfflineIndicator();
+                    return;
+                }
+            }
+            
+            // No valid cache, show error
+            showOfflineError();
+            
+        } catch (error) {
+            console.error('Error loading from cache:', error);
+            showOfflineError();
+        }
+    }
+    
+    // Show offline indicator
+    function showOfflineIndicator() {
+        if (offlineIndicator) return;
+        
+        offlineIndicator = document.createElement('div');
+        offlineIndicator.className = 'offline-indicator';
+        offlineIndicator.innerHTML = `
+            <div class="offline-content">
+                <span class="offline-icon">📡</span>
+                <span class="offline-text">You are offline - showing cached data</span>
+            </div>
+        `;
+        
+        // Add styles
+        offlineIndicator.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 14px;
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        `;
+        
+        document.body.appendChild(offlineIndicator);
+        
+        // Animate in
+        setTimeout(() => {
+            offlineIndicator.style.transform = 'translateY(0)';
+        }, 100);
+    }
+    
+    // Hide offline indicator
+    function hideOfflineIndicator() {
+        if (offlineIndicator) {
+            offlineIndicator.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                if (offlineIndicator && offlineIndicator.parentNode) {
+                    offlineIndicator.parentNode.removeChild(offlineIndicator);
+                }
+                offlineIndicator = null;
+            }, 300);
+        }
+    }
+    
+    // Show offline error
+    function showOfflineError() {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'offline-error';
+        errorDiv.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #666;">
+                <h3>Unable to load menu</h3>
+                <p>Please check your internet connection and try again.</p>
+                <button onclick="location.reload()" style="
+                    background: #472257;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                ">Retry</button>
+            </div>
+        `;
+        
+        const container = document.querySelector('.container');
+        if (container) {
+            container.innerHTML = '';
+            container.appendChild(errorDiv);
         }
     }
     
@@ -414,5 +544,26 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize language indicator
     updateLanguageIndicator();
+    
+    // PWA Online/Offline Event Listeners
+    window.addEventListener('online', () => {
+        console.log('App is back online');
+        isOnline = true;
+        hideOfflineIndicator();
+        
+        // Try to reload data when back online
+        loadMenuData();
+    });
+    
+    window.addEventListener('offline', () => {
+        console.log('App is offline');
+        isOnline = false;
+        showOfflineIndicator();
+    });
+    
+    // Check initial online status
+    if (!isOnline) {
+        showOfflineIndicator();
+    }
 });
   
