@@ -11,6 +11,17 @@
   <link rel="canonical" href="{{ url()->current() }}">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#472257">
+  
+  <!-- PWA Meta Tags -->
+  <meta name="application-name" content="Zohoor Al Shafa">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Zohoor Menu">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta name="msapplication-TileColor" content="#472257">
+  <meta name="msapplication-tap-highlight" content="no">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -34,7 +45,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('icons/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('icons/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icons/favicon-16x16.png') }}">
-  <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+  <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
 
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
@@ -111,5 +122,71 @@
 </body>
 
 <script src="{{ asset('js/menu.js') }}" defer></script>
+
+<!-- PWA Service Worker Registration -->
+<script>
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered successfully:', registration.scope);
+          
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // New content is available, notify user
+                if (confirm('New version available! Reload to update?')) {
+                  window.location.reload();
+                }
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+  
+  // Handle PWA install prompt
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+    
+    // Show install button or notification
+    console.log('PWA install prompt available');
+    
+    // You can show a custom install button here
+    // showInstallButton();
+  });
+  
+  // Handle PWA install
+  window.addEventListener('appinstalled', (evt) => {
+    console.log('PWA was installed');
+    // Hide install button
+    // hideInstallButton();
+  });
+  
+  // Handle online/offline status
+  window.addEventListener('online', () => {
+    console.log('App is online');
+    // Sync data when back online
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ action: 'sync' });
+    }
+  });
+  
+  window.addEventListener('offline', () => {
+    console.log('App is offline');
+    // Show offline indicator
+    // showOfflineIndicator();
+  });
+</script>
 
 </html>

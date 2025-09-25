@@ -1,20 +1,35 @@
 {
-  "name": "Sougha Menu",
-  "short_name": "Sougha",
-  "start_url": ".",
+  "name": "Zohoor Al Shafa - Food Menu",
+  "short_name": "Zohoor Menu",
+  "description": "Discover refined Middle Eastern & Jordanian dishes at Zohoor Al Shafa in Bahrain",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#f9f5f0",
-  "theme_color": "#f9f5f0",
+  "background_color": "#f6f2f8",
+  "theme_color": "#472257",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["food", "restaurant", "menu"],
   "icons": [
     {
-      "src": "images/logo icon-01.png",
+      "src": "images/1.pdf.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "images/logo icon-01.png",
+      "src": "images/1.pdf.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/zz.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
