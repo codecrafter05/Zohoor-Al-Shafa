@@ -293,6 +293,28 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
+        // Hide section and tab if no favorites
+        const mostLikedTab = document.querySelector('.tab[data-target="#most-liked"]');
+        if (favorites.length === 0) {
+            mostLikedSection.style.display = 'none';
+            if (mostLikedTab) {
+                // If the most-liked tab is active, activate the first available tab instead
+                if (mostLikedTab.classList.contains('active')) {
+                    mostLikedTab.classList.remove('active');
+                    const firstOtherTab = document.querySelector('.tab:not([data-target="#most-liked"])');
+                    if (firstOtherTab) {
+                        firstOtherTab.classList.add('active');
+                    }
+                }
+                mostLikedTab.style.display = 'none';
+            }
+        } else {
+            mostLikedSection.style.display = '';
+            if (mostLikedTab) {
+                mostLikedTab.style.display = '';
+            }
+        }
+        
         // Reinitialize card functionality
         initializeCards();
     }
